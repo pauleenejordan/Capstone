@@ -33,7 +33,9 @@
     <TextView
         android:id="@+id/tvScore"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        tools:visibility="gone" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -43,12 +45,16 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/tfe_pe_tv_device" />
+            android:text="@string/tfe_pe_tv_device"
+            android:visibility="gone"
+            tools:visibility="gone" />
 
         <Spinner
             android:id="@+id/spnDevice"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            tools:visibility="gone" />
     </LinearLayout>
 
     <LinearLayout
@@ -61,10 +67,19 @@
             android:layout_height="wrap_content"
             android:text="@string/tfe_pe_tv_model" />
 
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text=" 0" />
+
         <Spinner
             android:id="@+id/spnModel"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            tools:visibility="gone" />
     </LinearLayout>
 
     <LinearLayout
@@ -73,15 +88,19 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/tfe_pe_tv_tracking" />
-
         <Spinner
             android:id="@+id/spnTracker"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            tools:visibility="gone" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tfe_pe_tv_tracking"
+            android:visibility="gone"
+            tools:visibility="gone" />
     </LinearLayout>
 
     <RelativeLayout
@@ -95,13 +114,17 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toStartOf="@id/swPoseClassification"
-            android:text="@string/tfe_pe_tv_pose_classification" />
+            android:text="@string/tfe_pe_tv_pose_classification"
+            android:visibility="gone"
+            tools:visibility="gone" />
 
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/swPoseClassification"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentEnd="true"
+            android:visibility="gone"
+            tools:visibility="gone" />
     </RelativeLayout>
 
     <TextView

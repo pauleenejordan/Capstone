@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,5 +11,64 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <include layout="@layout/bottom_sheet_layout" />
+    <include layout="@layout/bottom_sheet_layout"/>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="81dp"
+        android:orientation="horizontal">
+
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/btnReset"
+        android:layout_width="132dp"
+        android:layout_height="61dp"
+        android:onClick="onClickReset"
+        android:text="Reset"
+        app:layout_anchor="@+id/linearLayout"
+        app:layout_anchorGravity="end|center" />
+
+    <Button
+        android:id="@+id/btnStop"
+        android:layout_width="132dp"
+        android:layout_height="61dp"
+        android:onClick="onClickStop"
+        android:text="Stop"
+        app:layout_anchor="@+id/linearLayout"
+        app:layout_anchorGravity="center" />
+
+    <Button
+        android:id="@+id/btnStart"
+        android:layout_width="132dp"
+        android:layout_height="61dp"
+        android:onClick="onClickStart"
+        android:text="Start"
+        app:layout_anchor="@+id/linearLayout"
+        app:layout_anchorGravity="start|center" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="151dp"
+        android:orientation="vertical"
+        app:layout_anchor="@+id/linearLayout"
+        app:layout_anchorGravity="bottom|center">
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/time_view"
+        android:layout_width="wrap_content"
+        android:layout_height="55dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="50dp"
+        android:text="00:00"
+        android:textColor="#6A0606"
+        android:textSize="50sp"
+        app:layout_anchor="@+id/linearLayout2"
+        app:layout_anchorGravity="bottom|center" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -21,6 +21,7 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Handler
 import android.os.Process
 import android.view.SurfaceView
 import android.view.View
@@ -37,12 +38,19 @@ import kotlinx.coroutines.launch
 import org.tensorflow.lite.examples.poseestimation.camera.CameraSource
 import org.tensorflow.lite.examples.poseestimation.data.Device
 import org.tensorflow.lite.examples.poseestimation.ml.*
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
     companion object {
         private const val FRAGMENT_DIALOG = "dialog"
     }
 
+    private var seconds = 0
+
+    // Is the stopwatch running?
+    private var running = false
+
+    private var wasRunning = false
     /** A [SurfaceView] for camera preview.   */
     private lateinit var surfaceView: SurfaceView
 
@@ -133,6 +141,20 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        if (savedInstanceState != null) {
+
+            // Get the previous state of the stopwatch
+            // if the activity has been
+            // destroyed and recreated.
+            seconds = savedInstanceState
+                .getInt("seconds")
+            running = savedInstanceState
+                .getBoolean("running")
+            wasRunning = savedInstanceState
+                .getBoolean("wasRunning")
+        }
+        runTimer()
         // keep screen on while app is running
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         tvScore = findViewById(R.id.tvScore)
@@ -155,6 +177,63 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onSaveInstanceState(
+        savedInstanceState: Bundle
+    ) {
+        super.onSaveInstanceState(savedInstanceState)
+        savedInstanceState
+            .putInt("seconds", seconds)
+        savedInstanceState
+            .putBoolean("running", running)
+        savedInstanceState
+            .putBoolean("wasRunning", wasRunning)
+    }
+
+    private fun runTimer() {
+
+        // Get the text view.
+        val timeView = findViewById<View>(
+            R.id.time_view
+        ) as TextView
+
+        // Creates a new Handler
+        val handler = Handler()
+
+        // Call the post() method,
+        // passing in a new Runnable.
+        // The post() method processes
+        // code without a delay,
+        // so the code in the Runnable
+        // will run almost immediately.
+        handler.post(object : Runnable {
+            override fun run() {
+                val minutes = seconds % 3600 / 60
+                val secs = seconds % 60
+
+                // Format the seconds into hours, minutes,
+                // and seconds.
+                val time = String.format(
+                    Locale.getDefault(),
+                    "%02d:%02d",
+                    minutes, secs
+                )
+
+                // Set the text view text.
+                timeView.text = time
+
+                // If running is true, increment the
+                // seconds variable.
+                if (running) {
+                    seconds++
+                }
+
+                // Post the code again
+                // with a delay of 1 second.
+                handler.postDelayed(this, 1000)
+            }
+        })
+    }
+
     override fun onStart() {
         super.onStart()
         openCamera()
@@ -163,12 +242,42 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         cameraSource?.resume()
         super.onResume()
+        if (wasRunning) {
+            running = true
+        }
     }
 
     override fun onPause() {
         cameraSource?.close()
         cameraSource = null
         super.onPause()
+        wasRunning = running
+        running = false
+    }
+
+    // Start the stopwatch running
+    // when the Start button is clicked.
+    // Below method gets called
+    // when the Start button is clicked.
+    fun onClickStart(view: View?) {
+        running = true
+    }
+
+    // Stop the stopwatch running
+    // when the Stop button is clicked.
+    // Below method gets called
+    // when the Stop button is clicked.
+    fun onClickStop(view: View?) {
+        running = false
+    }
+
+    // Reset the stopwatch when
+    // the Reset button is clicked.
+    // Below method gets called
+    // when the Reset button is clicked.
+    fun onClickReset(view: View?) {
+        running = false
+        seconds = 0
     }
 
     // check if permission is granted or not.

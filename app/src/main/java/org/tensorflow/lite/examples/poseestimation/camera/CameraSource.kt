@@ -269,7 +269,7 @@ class CameraSource(
 
         // if the model returns only one item, show that item's score.
         if (persons.isNotEmpty()) {
-            listener?.onDetectedInfo(persons[0].score, classificationResult)
+            listener?.onDetectedShoulderCount(persons[0].leftShoulderPressCount, persons[0].rightShoulderPressCount)
         }
         visualize(persons, bitmap)
     }
@@ -327,6 +327,6 @@ class CameraSource(
     interface CameraSourceListener {
         fun onFPSListener(fps: Int)
 
-        fun onDetectedInfo(personScore: Float?, poseLabels: List<Pair<String, Float>>?)
+        fun onDetectedShoulderCount(leftShoulderCount: Int?, rightShoulderCount: Int?)
     }
 }

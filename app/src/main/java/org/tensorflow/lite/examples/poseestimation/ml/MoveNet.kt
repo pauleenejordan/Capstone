@@ -87,6 +87,11 @@ class MoveNet(private val interpreter: Interpreter, private var gpuDelegate: Gpu
             create(context, device, ModelType.Lightning)
     }
 
+    private var leftShoulderState: String = ""
+    private var rightShoulderState: String = ""
+    private var leftShoulderPressCount: Int = 0
+    private var rightShoulderPressCount: Int = 0
+
     private var cropRegion: RectF? = null
     private var lastInferenceTimeNanos: Long = -1
     private val inputWidth = interpreter.getInputTensor(0).shape()[1]
@@ -168,7 +173,13 @@ class MoveNet(private val interpreter: Interpreter, private var gpuDelegate: Gpu
         }
         lastInferenceTimeNanos =
             SystemClock.elapsedRealtimeNanos() - inferenceStartTimeNanos
-        return listOf(Person(keyPoints = keyPoints, score = totalScore / numKeyPoints))
+
+        leftShoulderPressCount = leftShoulderPressStates(determineLeftArmAngles(keyPoints))
+        rightShoulderPressCount = rightShoulderPressStates(determineRightArmAngles(keyPoints))
+
+        print(("" + leftShoulderPressCount + "   " + rightShoulderPressCount + "\n"))
+        return listOf(Person(keyPoints = keyPoints, score = totalScore / numKeyPoints,
+            leftShoulderPressCount = leftShoulderPressCount, rightShoulderPressCount = rightShoulderPressCount))
     }
 
     override fun lastInferenceTimeNanos(): Long = lastInferenceTimeNanos
@@ -313,11 +324,8 @@ class MoveNet(private val interpreter: Interpreter, private var gpuDelegate: Gpu
      * full 17 keypoints and 4 torso keypoints. The returned information will be
      * used to determine the crop size. See determineRectF for more detail.
      */
-    private fun detetermineLeftArmAngles(
-        keyPoints: List<KeyPoint>,
-        targetKeyPoints: List<KeyPoint>
-
-
+    private fun determineLeftArmAngles(
+        keyPoints: List<KeyPoint>
     ): Double {
         var a = keyPoints[BodyPart.LEFT_SHOULDER.position]
         var b = keyPoints[BodyPart.LEFT_ELBOW.position]
@@ -330,39 +338,43 @@ class MoveNet(private val interpreter: Interpreter, private var gpuDelegate: Gpu
         return angle
 
     }
-    private fun detetermineRightArmAngles(
-        keyPoints: List<KeyPoint>,
-        targetKeyPoints: List<KeyPoint>
 
-
+    private fun determineRightArmAngles(
+        keyPoints: List<KeyPoint>
     ): Double {
         var a = keyPoints[BodyPart.RIGHT_SHOULDER.position]
         var b = keyPoints[BodyPart.RIGHT_ELBOW.position]
         var c = keyPoints[BodyPart.RIGHT_WRIST.position]
         val radians = kotlin.math.atan2(c.coordinate.y - b.coordinate.y, c.coordinate.x - b.coordinate.x)-
                 kotlin.math.atan2(a.coordinate.y - b.coordinate.y, a.coordinate.x - b.coordinate.x)
-        var angle = abs((radians * 180)/kotlin.math.PI)
+        var angle = abs((radians * 180)/ PI)
         if (angle > 180)
             angle = 360 - angle
         return angle
 
     }
 
-    private fun shoulderPressStates(angle: Float): Int{
-        var state = ""
-        var counter = 0
+    private fun leftShoulderPressStates(angle: Double): Int{
         if(angle > 150){
-             state = "Up"
+            leftShoulderState = "Up"
         }
-        else if(angle < 80 && state == "Up") {
-            state = "Down"
-            counter += counter
+        else if(angle < 80 && leftShoulderState == "Up") {
+            leftShoulderState = "Down"
+            leftShoulderPressCount += 1
         }
-        return counter
+        return leftShoulderPressCount
     }
 
-
-
+    private fun rightShoulderPressStates(angle: Double): Int{
+        if(angle > 150){
+            rightShoulderState = "Up"
+        }
+        else if(angle < 80 && rightShoulderState == "Up") {
+            rightShoulderState = "Down"
+            rightShoulderPressCount += 1
+        }
+        return rightShoulderPressCount
+    }
 
     private fun determineTorsoAndBodyDistances(
         keyPoints: List<KeyPoint>,

@@ -53,10 +53,10 @@ object VisualizationUtils {
         Pair(BodyPart.LEFT_SHOULDER, BodyPart.LEFT_HIP),
         Pair(BodyPart.RIGHT_SHOULDER, BodyPart.RIGHT_HIP),
         Pair(BodyPart.LEFT_HIP, BodyPart.RIGHT_HIP),
-        Pair(BodyPart.LEFT_HIP, BodyPart.LEFT_KNEE),
-        Pair(BodyPart.LEFT_KNEE, BodyPart.LEFT_ANKLE),
-        Pair(BodyPart.RIGHT_HIP, BodyPart.RIGHT_KNEE),
-        Pair(BodyPart.RIGHT_KNEE, BodyPart.RIGHT_ANKLE)
+//        Pair(BodyPart.LEFT_HIP, BodyPart.LEFT_KNEE),
+//        Pair(BodyPart.LEFT_KNEE, BodyPart.LEFT_ANKLE),
+//        Pair(BodyPart.RIGHT_HIP, BodyPart.RIGHT_KNEE),
+//        Pair(BodyPart.RIGHT_KNEE, BodyPart.RIGHT_ANKLE)
     )
 
     // Draw line and point indicate body pose

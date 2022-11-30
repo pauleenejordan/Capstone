@@ -65,7 +65,8 @@ class MainActivity : AppCompatActivity() {
     /** Default device is CPU */
     private var device = Device.CPU
 
-    private lateinit var tvScore: TextView
+    private lateinit var tvLeftShoulderPressCount: TextView
+    private lateinit var tvRightShoulderPressCount: TextView
     private lateinit var tvFPS: TextView
     private lateinit var spnDevice: Spinner
     private lateinit var spnModel: Spinner
@@ -157,7 +158,8 @@ class MainActivity : AppCompatActivity() {
         runTimer()
         // keep screen on while app is running
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        tvScore = findViewById(R.id.tvScore)
+        tvLeftShoulderPressCount = findViewById(R.id.tvLeftShoulderPressCount)
+        tvRightShoulderPressCount = findViewById(R.id.tvRightShoulderPressCount)
         tvFPS = findViewById(R.id.tvFps)
         spnModel = findViewById(R.id.spnModel)
         spnDevice = findViewById(R.id.spnDevice)
@@ -299,25 +301,12 @@ class MainActivity : AppCompatActivity() {
                             tvFPS.text = getString(R.string.tfe_pe_tv_fps, fps)
                         }
 
-                        override fun onDetectedInfo(
-                            personScore: Float?,
-                            poseLabels: List<Pair<String, Float>>?
+                        override fun onDetectedShoulderCount(
+                            leftShoulderCount: Int?,
+                            rightShoulderCount: Int?
                         ) {
-                            tvScore.text = getString(R.string.tfe_pe_tv_score, personScore ?: 0f)
-                            poseLabels?.sortedByDescending { it.second }?.let {
-                                tvClassificationValue1.text = getString(
-                                    R.string.tfe_pe_tv_classification_value,
-                                    convertPoseLabels(if (it.isNotEmpty()) it[0] else null)
-                                )
-                                tvClassificationValue2.text = getString(
-                                    R.string.tfe_pe_tv_classification_value,
-                                    convertPoseLabels(if (it.size >= 2) it[1] else null)
-                                )
-                                tvClassificationValue3.text = getString(
-                                    R.string.tfe_pe_tv_classification_value,
-                                    convertPoseLabels(if (it.size >= 3) it[2] else null)
-                                )
-                            }
+                            tvLeftShoulderPressCount.text = getString(R.string.tfe_pe_tv_left_shoulder_count, leftShoulderCount ?: 0)
+                            tvRightShoulderPressCount.text = getString(R.string.tfe_pe_tv_right_shoulder_count, rightShoulderCount ?: 0)
                         }
 
                     }).apply {
@@ -465,7 +454,8 @@ class MainActivity : AppCompatActivity() {
 
     // Show/hide the detection score.
     private fun showDetectionScore(isVisible: Boolean) {
-        tvScore.visibility = if (isVisible) View.VISIBLE else View.GONE
+        tvLeftShoulderPressCount.visibility = if (isVisible) View.VISIBLE else View.GONE
+        tvRightShoulderPressCount.visibility = if (isVisible) View.VISIBLE else View.GONE
     }
 
     // Show/hide classification result.

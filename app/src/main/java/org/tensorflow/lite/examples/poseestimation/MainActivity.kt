@@ -39,16 +39,20 @@ import org.tensorflow.lite.examples.poseestimation.camera.CameraSource
 import org.tensorflow.lite.examples.poseestimation.data.Device
 import org.tensorflow.lite.examples.poseestimation.ml.*
 import java.util.*
+import kotlin.math.abs
+import kotlin.math.floor
 
 class MainActivity : AppCompatActivity() {
     companion object {
         private const val FRAGMENT_DIALOG = "dialog"
     }
 
-    private var seconds = 0
+    private var seconds = -5
+    private var deciseconds = 0
+
 
     // Is the stopwatch running?
-    private var running = false
+    public var running = false
 
     private var wasRunning = false
     /** A [SurfaceView] for camera preview.   */
@@ -150,6 +154,8 @@ class MainActivity : AppCompatActivity() {
             // destroyed and recreated.
             seconds = savedInstanceState
                 .getInt("seconds")
+            deciseconds = savedInstanceState
+                .getInt("deciseconds")
             running = savedInstanceState
                 .getBoolean("running")
             wasRunning = savedInstanceState
@@ -186,6 +192,8 @@ class MainActivity : AppCompatActivity() {
         savedInstanceState
             .putInt("seconds", seconds)
         savedInstanceState
+            .putInt("deciseconds", deciseconds)
+        savedInstanceState
             .putBoolean("running", running)
         savedInstanceState
             .putBoolean("wasRunning", wasRunning)
@@ -210,14 +218,25 @@ class MainActivity : AppCompatActivity() {
         handler.post(object : Runnable {
             override fun run() {
                 val minutes = seconds % 3600 / 60
-                val secs = seconds % 60
+                var secs = seconds % 60
+                var decisecs = deciseconds % 10
+
+                if (secs < 0) {
+                    secs = abs(secs)
+                    decisecs = (10 - decisecs) % 10
+                    if(decisecs == 9 && secs == 5) {
+                        secs = 4
+                        seconds++
+                    }
+
+                }
 
                 // Format the seconds into hours, minutes,
                 // and seconds.
                 val time = String.format(
                     Locale.getDefault(),
-                    "%02d:%02d",
-                    minutes, secs
+                    "%02d:%02d.%01d",
+                    minutes, secs, decisecs
                 )
 
                 // Set the text view text.
@@ -226,12 +245,16 @@ class MainActivity : AppCompatActivity() {
                 // If running is true, increment the
                 // seconds variable.
                 if (running) {
-                    seconds++
+                    deciseconds++
+                    if(deciseconds == 10) {
+                        seconds++
+                        deciseconds = 0
+                    }
                 }
 
                 // Post the code again
                 // with a delay of 1 second.
-                handler.postDelayed(this, 1000)
+                handler.postDelayed(this, 100)
             }
         })
     }
@@ -279,7 +302,8 @@ class MainActivity : AppCompatActivity() {
     // when the Reset button is clicked.
     fun onClickReset(view: View?) {
         running = false
-        seconds = 0
+        seconds = -5
+        deciseconds = 0
     }
 
     // check if permission is granted or not.

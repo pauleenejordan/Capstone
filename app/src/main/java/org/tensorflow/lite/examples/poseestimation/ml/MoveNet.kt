@@ -92,6 +92,7 @@ class MoveNet(private val interpreter: Interpreter, private var gpuDelegate: Gpu
     private var leftShoulderPressCount: Int = 0
     private var rightShoulderPressCount: Int = 0
 
+
     private var cropRegion: RectF? = null
     private var lastInferenceTimeNanos: Long = -1
     private val inputWidth = interpreter.getInputTensor(0).shape()[1]
@@ -174,8 +175,8 @@ class MoveNet(private val interpreter: Interpreter, private var gpuDelegate: Gpu
         lastInferenceTimeNanos =
             SystemClock.elapsedRealtimeNanos() - inferenceStartTimeNanos
 
-        leftShoulderPressCount = leftShoulderPressStates(determineLeftArmAngles(keyPoints))
-        rightShoulderPressCount = rightShoulderPressStates(determineRightArmAngles(keyPoints))
+        leftShoulderPressCount = leftShoulderPressStates(determineLeftArmAngles(keyPoints), leftTorsoAngles(keyPoints))
+        rightShoulderPressCount = rightShoulderPressStates(determineRightArmAngles(keyPoints), rightTorsoAngles(keyPoints))
 
         print(("" + leftShoulderPressCount + "   " + rightShoulderPressCount + "\n"))
         return listOf(Person(keyPoints = keyPoints, score = totalScore / numKeyPoints,
@@ -354,26 +355,48 @@ class MoveNet(private val interpreter: Interpreter, private var gpuDelegate: Gpu
 
     }
 
-    private fun leftShoulderPressStates(angle: Double): Int{
-        if(angle > 150){
+    private fun leftShoulderPressStates(angle1: Double, angle2: Double): Int{
+        if((angle1 > 150) && (angle2 > 125)){
             leftShoulderState = "Up"
         }
-        else if(angle < 80 && leftShoulderState == "Up") {
+        else if((angle1 < 80) &&(angle2 < 60) && rightShoulderState == "Up") {
             leftShoulderState = "Down"
             leftShoulderPressCount += 1
         }
         return leftShoulderPressCount
     }
 
-    private fun rightShoulderPressStates(angle: Double): Int{
-        if(angle > 150){
+    private fun rightShoulderPressStates(angle1: Double, angle2: Double): Int{
+        if((angle1 > 150) && (angle2 > 125)){
             rightShoulderState = "Up"
         }
-        else if(angle < 80 && rightShoulderState == "Up") {
+        else if((angle1 < 80) &&(angle2 < 60) && rightShoulderState == "Up") {
             rightShoulderState = "Down"
             rightShoulderPressCount += 1
         }
         return rightShoulderPressCount
+    }
+    private fun rightTorsoAngles(
+        keyPoints: List<KeyPoint>
+    ): Double {
+        var a = keyPoints[BodyPart.RIGHT_SHOULDER.position]
+        var b = keyPoints[BodyPart.RIGHT_HIP.position]
+        val radians = kotlin.math.atan2(a.coordinate.y - b.coordinate.y, a.coordinate.x - b.coordinate.x)
+        var angle = abs((radians * 180)/ PI)
+        if (angle > 180)
+            angle = 360 - angle
+        return angle
+    }
+    private fun leftTorsoAngles(
+        keyPoints: List<KeyPoint>
+    ): Double {
+        var a = keyPoints[BodyPart.LEFT_SHOULDER.position]
+        var b = keyPoints[BodyPart.LEFT_HIP.position]
+        val radians = kotlin.math.atan2(a.coordinate.y - b.coordinate.y, a.coordinate.x - b.coordinate.x)
+        var angle = abs((radians * 180)/ PI)
+        if (angle > 180)
+            angle = 360 - angle
+        return angle
     }
 
     private fun determineTorsoAndBodyDistances(

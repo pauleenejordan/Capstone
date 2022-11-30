@@ -18,6 +18,7 @@ package org.tensorflow.lite.examples.poseestimation.ml
 
 import android.content.Context
 import org.tensorflow.lite.Interpreter
+
 import org.tensorflow.lite.examples.poseestimation.data.Person
 import org.tensorflow.lite.support.common.FileUtil
 
@@ -65,9 +66,11 @@ class PoseClassifier(
             output.add(Pair(labels[index], score))
         }
         return output
+
     }
 
     fun close() {
         interpreter.close()
     }
 }
+

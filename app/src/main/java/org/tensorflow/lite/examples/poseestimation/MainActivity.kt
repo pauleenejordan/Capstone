@@ -305,8 +305,8 @@ class MainActivity : AppCompatActivity() {
                             leftShoulderCount: Int?,
                             rightShoulderCount: Int?
                         ) {
-                            tvLeftShoulderPressCount.text = getString(R.string.tfe_pe_tv_left_shoulder_count, leftShoulderCount ?: 0)
-                            tvRightShoulderPressCount.text = getString(R.string.tfe_pe_tv_right_shoulder_count, rightShoulderCount ?: 0)
+                            tvLeftShoulderPressCount.text = getString(R.string.tfe_pe_tv_left_shoulder_count, rightShoulderCount ?: 0)
+                            tvRightShoulderPressCount.text = getString(R.string.tfe_pe_tv_right_shoulder_count, leftShoulderCount ?: 0)
                         }
 
                     }).apply {

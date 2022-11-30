@@ -178,7 +178,7 @@ class MoveNet(private val interpreter: Interpreter, private var gpuDelegate: Gpu
         leftShoulderPressCount = leftShoulderPressStates(determineLeftArmAngles(keyPoints), leftTorsoAngles(keyPoints))
         rightShoulderPressCount = rightShoulderPressStates(determineRightArmAngles(keyPoints), rightTorsoAngles(keyPoints))
 
-        print(("" + leftShoulderPressCount + "   " + rightShoulderPressCount + "\n"))
+//        print(("" + leftShoulderPressCount + "   " + rightShoulderPressCount + "\n"))
         return listOf(Person(keyPoints = keyPoints, score = totalScore / numKeyPoints,
             leftShoulderPressCount = leftShoulderPressCount, rightShoulderPressCount = rightShoulderPressCount))
     }
@@ -359,7 +359,7 @@ class MoveNet(private val interpreter: Interpreter, private var gpuDelegate: Gpu
         if((angle1 > 150) && (angle2 > 125)){
             leftShoulderState = "Up"
         }
-        else if((angle1 < 80) &&(angle2 < 60) && rightShoulderState == "Up") {
+        else if((angle1 < 80) &&(angle2 < 60) && leftShoulderState == "Up") {
             leftShoulderState = "Down"
             leftShoulderPressCount += 1
         }
@@ -379,9 +379,11 @@ class MoveNet(private val interpreter: Interpreter, private var gpuDelegate: Gpu
     private fun rightTorsoAngles(
         keyPoints: List<KeyPoint>
     ): Double {
-        var a = keyPoints[BodyPart.RIGHT_SHOULDER.position]
-        var b = keyPoints[BodyPart.RIGHT_HIP.position]
-        val radians = kotlin.math.atan2(a.coordinate.y - b.coordinate.y, a.coordinate.x - b.coordinate.x)
+        var a = keyPoints[BodyPart.RIGHT_HIP.position]
+        var b = keyPoints[BodyPart.RIGHT_SHOULDER.position]
+        var c = keyPoints[BodyPart.RIGHT_ELBOW.position]
+        val radians = kotlin.math.atan2(c.coordinate.y - b.coordinate.y, c.coordinate.x - b.coordinate.x)-
+                kotlin.math.atan2(a.coordinate.y - b.coordinate.y, a.coordinate.x - b.coordinate.x)
         var angle = abs((radians * 180)/ PI)
         if (angle > 180)
             angle = 360 - angle
@@ -390,9 +392,11 @@ class MoveNet(private val interpreter: Interpreter, private var gpuDelegate: Gpu
     private fun leftTorsoAngles(
         keyPoints: List<KeyPoint>
     ): Double {
-        var a = keyPoints[BodyPart.LEFT_SHOULDER.position]
-        var b = keyPoints[BodyPart.LEFT_HIP.position]
-        val radians = kotlin.math.atan2(a.coordinate.y - b.coordinate.y, a.coordinate.x - b.coordinate.x)
+        var a = keyPoints[BodyPart.LEFT_HIP.position]
+        var b = keyPoints[BodyPart.LEFT_SHOULDER.position]
+        var c = keyPoints[BodyPart.LEFT_ELBOW.position]
+        val radians = kotlin.math.atan2(c.coordinate.y - b.coordinate.y, c.coordinate.x - b.coordinate.x)-
+                kotlin.math.atan2(a.coordinate.y - b.coordinate.y, a.coordinate.x - b.coordinate.x)
         var angle = abs((radians * 180)/ PI)
         if (angle > 180)
             angle = 360 - angle

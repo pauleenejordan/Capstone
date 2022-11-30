@@ -26,7 +26,7 @@ import kotlin.math.max
 
 object VisualizationUtils {
     /** Radius of circle used to draw keypoints.  */
-    private const val CIRCLE_RADIUS = 6f
+    private const val CIRCLE_RADIUS = 2f
 
     /** Width of line used to connected two keypoints.  */
     private const val LINE_WIDTH = 4f
@@ -39,12 +39,12 @@ object VisualizationUtils {
 
     /** Pair of keypoints to draw lines between.  */
     private val bodyJoints = listOf(
-        Pair(BodyPart.NOSE, BodyPart.LEFT_EYE),
-        Pair(BodyPart.NOSE, BodyPart.RIGHT_EYE),
-        Pair(BodyPart.LEFT_EYE, BodyPart.LEFT_EAR),
-        Pair(BodyPart.RIGHT_EYE, BodyPart.RIGHT_EAR),
-        Pair(BodyPart.NOSE, BodyPart.LEFT_SHOULDER),
-        Pair(BodyPart.NOSE, BodyPart.RIGHT_SHOULDER),
+//        Pair(BodyPart.NOSE, BodyPart.LEFT_EYE),
+//        Pair(BodyPart.NOSE, BodyPart.RIGHT_EYE),
+//        Pair(BodyPart.LEFT_EYE, BodyPart.LEFT_EAR),
+//        Pair(BodyPart.RIGHT_EYE, BodyPart.RIGHT_EAR),
+//        Pair(BodyPart.NOSE, BodyPart.LEFT_SHOULDER),
+//        Pair(BodyPart.NOSE, BodyPart.RIGHT_SHOULDER),
         Pair(BodyPart.LEFT_SHOULDER, BodyPart.LEFT_ELBOW),
         Pair(BodyPart.LEFT_ELBOW, BodyPart.LEFT_WRIST),
         Pair(BodyPart.RIGHT_SHOULDER, BodyPart.RIGHT_ELBOW),

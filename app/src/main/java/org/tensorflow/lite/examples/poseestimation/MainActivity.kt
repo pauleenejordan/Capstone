@@ -20,6 +20,7 @@ import android.Manifest
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Process
@@ -222,14 +223,23 @@ class MainActivity : AppCompatActivity() {
                 var decisecs = deciseconds % 10
 
                 if (secs < 0) {
+                    timeView.setTextColor(Color.RED)
                     secs = abs(secs)
                     decisecs = (10 - decisecs) % 10
-                    if(decisecs == 9 && secs == 5) {
+                    if (decisecs == 9 && secs == 5) {
                         secs = 4
                         seconds++
                     }
-
-                }
+                } else if (deciseconds >= 40 && deciseconds < 50) {
+                    timeView.setTextColor(Color.RED)
+                    secs = 0
+                    seconds = 0
+                    decisecs = (10 - decisecs) % 10
+                } else if (deciseconds == 50) {
+                    timeView.setTextColor(Color.GREEN)
+                    secs = 0
+                    seconds = 0
+                } else timeView.setTextColor(Color.GREEN)
 
                 // Format the seconds into hours, minutes,
                 // and seconds.
@@ -246,9 +256,9 @@ class MainActivity : AppCompatActivity() {
                 // seconds variable.
                 if (running) {
                     deciseconds++
-                    if(deciseconds == 10) {
+                    if(deciseconds % 10 == 0) {
                         seconds++
-                        deciseconds = 0
+                        //deciseconds = 0
                     }
                 }
 

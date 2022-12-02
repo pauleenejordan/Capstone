@@ -41,7 +41,6 @@ import org.tensorflow.lite.examples.poseestimation.data.Device
 import org.tensorflow.lite.examples.poseestimation.ml.*
 import java.util.*
 import kotlin.math.abs
-import kotlin.math.floor
 
 class MainActivity : AppCompatActivity() {
     companion object {
@@ -72,6 +71,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var tvLeftShoulderPressCount: TextView
     private lateinit var tvRightShoulderPressCount: TextView
+    private lateinit var tvStartButton: View
+
     private lateinit var tvFPS: TextView
     private lateinit var spnDevice: Spinner
     private lateinit var spnModel: Spinner
@@ -167,6 +168,8 @@ class MainActivity : AppCompatActivity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         tvLeftShoulderPressCount = findViewById(R.id.tvLeftShoulderPressCount)
         tvRightShoulderPressCount = findViewById(R.id.tvRightShoulderPressCount)
+        tvStartButton = findViewById(R.id.btnStart)
+
         tvFPS = findViewById(R.id.tvFps)
         spnModel = findViewById(R.id.spnModel)
         spnDevice = findViewById(R.id.spnDevice)
@@ -229,17 +232,35 @@ class MainActivity : AppCompatActivity() {
                     if (decisecs == 9 && secs == 5) {
                         secs = 4
                         seconds++
+                    } else if(decisecs == 0) {
+                        if(secs == 4) secs = 5
+                        if(secs == 3) secs = 4
+                        if(secs == 2) secs = 3
+                        if(secs == 1) secs = 2
+//                        when (secs) {
+//                            4 -> {secs = 5}
+//                            3 -> {secs = 4}
+//                            2 -> {secs = 3}
+//                            1 -> {secs = 2}
+//                        }
                     }
+//                    else if(decisecs == 0 && secs == 4) secs = 5
+//                    else if(decisecs == 0 && secs == 3) secs = 4
+//                    else if(decisecs == 0 && secs == 2) secs = 3
+//                    else if(decisecs == 0 && secs == 1) secs = 2
                 } else if (deciseconds >= 40 && deciseconds < 50) {
                     timeView.setTextColor(Color.RED)
                     secs = 0
                     seconds = 0
                     decisecs = (10 - decisecs) % 10
+                    if(decisecs == 0 && secs == 0) secs = 1
                 } else if (deciseconds == 50) {
                     timeView.setTextColor(Color.GREEN)
                     secs = 0
                     seconds = 0
-                } else timeView.setTextColor(Color.GREEN)
+                } else {
+                    timeView.setTextColor(Color.GREEN)
+                }
 
                 // Format the seconds into hours, minutes,
                 // and seconds.
@@ -295,6 +316,7 @@ class MainActivity : AppCompatActivity() {
     // Below method gets called
     // when the Start button is clicked.
     fun onClickStart(view: View?) {
+        tvStartButton.visibility = View.GONE
         running = true
     }
 
@@ -303,6 +325,7 @@ class MainActivity : AppCompatActivity() {
     // Below method gets called
     // when the Stop button is clicked.
     fun onClickStop(view: View?) {
+        tvStartButton.visibility = View.VISIBLE
         running = false
     }
 
@@ -311,6 +334,7 @@ class MainActivity : AppCompatActivity() {
     // Below method gets called
     // when the Reset button is clicked.
     fun onClickReset(view: View?) {
+        tvStartButton.visibility = View.VISIBLE
         running = false
         seconds = -5
         deciseconds = 0

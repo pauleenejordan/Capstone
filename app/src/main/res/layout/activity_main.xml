@@ -6,17 +6,37 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <TextView
+        android:id="@+id/tvLeftShoulderPressCount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:textSize="30sp"
+        app:layout_anchor="@+id/linearLayout3"
+        app:layout_anchorGravity="start|bottom" />
+
+    <TextView
+        android:id="@+id/tvRightShoulderPressCount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:textSize="30sp"
+        app:layout_anchor="@+id/linearLayout4"
+        app:layout_anchorGravity="end|bottom" />
+
     <SurfaceView
         android:id="@+id/surfaceView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="715dp" />
 
-    <include layout="@layout/bottom_sheet_layout"/>
+    <include
+        layout="@layout/bottom_sheet_layout"
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="81dp"
+        android:layout_height="60dp"
         android:orientation="horizontal">
 
     </LinearLayout>
@@ -26,36 +46,39 @@
         android:id="@+id/btnReset"
         android:layout_width="132dp"
         android:layout_height="61dp"
+        android:backgroundTint="#FF0000"
         android:onClick="onClickReset"
         android:text="Reset"
-        app:layout_anchor="@+id/linearLayout"
+        app:layout_anchor="@+id/linearLayout2"
         app:layout_anchorGravity="end|center" />
 
     <Button
         android:id="@+id/btnStop"
         android:layout_width="132dp"
         android:layout_height="61dp"
+        android:backgroundTint="#FF0000"
         android:onClick="onClickStop"
         android:text="Stop"
-        app:layout_anchor="@+id/linearLayout"
+        app:layout_anchor="@+id/btnStart"
         app:layout_anchorGravity="center" />
 
     <Button
         android:id="@+id/btnStart"
         android:layout_width="132dp"
         android:layout_height="61dp"
+        android:backgroundTint="#00FF00"
         android:onClick="onClickStart"
         android:text="Start"
-        app:layout_anchor="@+id/linearLayout"
+        app:layout_anchor="@+id/linearLayout2"
         app:layout_anchorGravity="start|center" />
 
     <LinearLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="151dp"
+        android:layout_width="156dp"
+        android:layout_height="100dp"
         android:orientation="vertical"
         app:layout_anchor="@+id/linearLayout"
-        app:layout_anchorGravity="bottom|center">
+        app:layout_anchorGravity="center">
 
     </LinearLayout>
 
@@ -65,10 +88,29 @@
         android:layout_height="55dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="50dp"
-        android:text="00:00"
-        android:textColor="#6A0606"
+
         android:textSize="50sp"
         app:layout_anchor="@+id/linearLayout2"
         app:layout_anchorGravity="bottom|center" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="156dp"
+        android:layout_height="740dp"
+        android:orientation="vertical"
+        app:layout_anchor="@+id/linearLayout"
+        app:layout_anchorGravity="center">
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout4"
+        android:layout_width="156dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_anchor="@+id/linearLayout"
+        app:layout_anchorGravity="center">
+
+    </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

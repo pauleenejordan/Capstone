@@ -19,6 +19,7 @@ package org.tensorflow.lite.examples.poseestimation
 import android.Manifest
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
@@ -41,6 +42,7 @@ import org.tensorflow.lite.examples.poseestimation.data.Device
 import org.tensorflow.lite.examples.poseestimation.ml.*
 import java.util.*
 import kotlin.math.abs
+
 
 class MainActivity : AppCompatActivity() {
     companion object {
@@ -327,6 +329,50 @@ class MainActivity : AppCompatActivity() {
     fun onClickStop(view: View?) {
         tvStartButton.visibility = View.VISIBLE
         running = false
+        // Create the object of AlertDialog Builder class
+        // Create the object of AlertDialog Builder class
+        val builder = AlertDialog.Builder(this@MainActivity)
+
+        // Set the message show for the Alert time
+
+        // Set the message show for the Alert time
+        builder.setMessage("Burned Calories: ")
+
+        // Set Alert Title
+
+        // Set Alert Title
+        builder.setTitle(" Tracker")
+
+        // Set Cancelable false for when the user clicks on the outside the Dialog Box then it will remain show
+
+        // Set Cancelable false for when the user clicks on the outside the Dialog Box then it will remain show
+        builder.setCancelable(false)
+
+        // Set the positive button with yes name Lambda OnClickListener method is use of DialogInterface interface.
+
+        // Set the positive button with yes name Lambda OnClickListener method is use of DialogInterface interface.
+        builder.setPositiveButton("Quit",
+            DialogInterface.OnClickListener { dialog: DialogInterface?, which: Int ->
+                // When the user click yes button then app will close
+                finish()
+            } as DialogInterface.OnClickListener)
+
+        // Set the Negative button with No name Lambda OnClickListener method is use of DialogInterface interface.
+
+        // Set the Negative button with No name Lambda OnClickListener method is use of DialogInterface interface.
+        builder.setNegativeButton("Continue",
+            DialogInterface.OnClickListener { dialog: DialogInterface, which: Int ->
+                // If user click no then dialog box is canceled.
+                dialog.cancel()
+            } as DialogInterface.OnClickListener)
+
+        // Create the Alert dialog
+
+        // Create the Alert dialog
+        val alertDialog = builder.create()
+        // Show the Alert Dialog box
+        // Show the Alert Dialog box
+        alertDialog.show()
     }
 
     // Reset the stopwatch when
@@ -338,6 +384,50 @@ class MainActivity : AppCompatActivity() {
         running = false
         seconds = -5
         deciseconds = 0
+        // Create the object of AlertDialog Builder class
+        // Create the object of AlertDialog Builder class
+        val builder = AlertDialog.Builder(this@MainActivity)
+
+        // Set the message show for the Alert time
+
+        // Set the message show for the Alert time
+        builder.setMessage("Burned Calories: ")
+
+        // Set Alert Title
+
+        // Set Alert Title
+        builder.setTitle(" Tracker")
+
+        // Set Cancelable false for when the user clicks on the outside the Dialog Box then it will remain show
+
+        // Set Cancelable false for when the user clicks on the outside the Dialog Box then it will remain show
+        builder.setCancelable(false)
+
+        // Set the positive button with yes name Lambda OnClickListener method is use of DialogInterface interface.
+
+        // Set the positive button with yes name Lambda OnClickListener method is use of DialogInterface interface.
+        builder.setPositiveButton("Quit",
+            DialogInterface.OnClickListener { dialog: DialogInterface?, which: Int ->
+                // When the user click yes button then app will close
+                finish()
+            } as DialogInterface.OnClickListener)
+
+        // Set the Negative button with No name Lambda OnClickListener method is use of DialogInterface interface.
+
+        // Set the Negative button with No name Lambda OnClickListener method is use of DialogInterface interface.
+        builder.setNegativeButton("Continue",
+            DialogInterface.OnClickListener { dialog: DialogInterface, which: Int ->
+                // If user click no then dialog box is canceled.
+                dialog.cancel()
+            } as DialogInterface.OnClickListener)
+
+        // Create the Alert dialog
+
+        // Create the Alert dialog
+        val alertDialog = builder.create()
+        // Show the Alert Dialog box
+        // Show the Alert Dialog box
+        alertDialog.show()
     }
 
     // check if permission is granted or not.

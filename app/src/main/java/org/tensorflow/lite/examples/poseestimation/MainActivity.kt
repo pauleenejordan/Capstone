@@ -205,6 +205,12 @@ class MainActivity : AppCompatActivity() {
             .putBoolean("wasRunning", wasRunning)
     }
 
+    private fun caloriesBurned(
+        seconds: Double
+    ): Double {
+        return ((3.5 * 3.5 * 83.9146) / 200) * (seconds / 60)
+    }
+
     private fun runTimer() {
 
         // Get the text view.

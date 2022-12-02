@@ -41,7 +41,6 @@
 
     </LinearLayout>
 
-
     <Button
         android:id="@+id/btnReset"
         android:layout_width="132dp"
@@ -49,6 +48,7 @@
         android:backgroundTint="#FF0000"
         android:onClick="onClickReset"
         android:text="Reset"
+        android:drawableLeft="@drawable/ic_baseline_replay_24"
         app:layout_anchor="@+id/linearLayout2"
         app:layout_anchorGravity="end|center" />
 
@@ -59,16 +59,20 @@
         android:backgroundTint="#FF0000"
         android:onClick="onClickStop"
         android:text="Stop"
+        android:drawableLeft="@drawable/ic_baseline_stop_circle_24"
         app:layout_anchor="@+id/btnStart"
         app:layout_anchorGravity="center" />
 
+
     <Button
+
         android:id="@+id/btnStart"
         android:layout_width="132dp"
         android:layout_height="61dp"
-        android:backgroundTint="#00FF00"
+        android:backgroundTint="#37BD37"
         android:onClick="onClickStart"
         android:text="Start"
+        android:drawableLeft="@drawable/ic_baseline_play_circle_24"
         app:layout_anchor="@+id/linearLayout2"
         app:layout_anchorGravity="start|center" />
 
